@@ -1,0 +1,26 @@
+body {
+    background-color: white;
+}
+
+svg {
+    background: #e8e7e7;
+    
+}
+#map {
+    text-align: center;
+}
+
+.district {
+    stroke: rgb(99, 99, 99);
+    stroke-width: .5;
+}
+
+
+.district-center {
+    fill: rgb(88, 88, 215);
+    stroke: black;
+    stroke-width: .5;
+    
+
+}
+
