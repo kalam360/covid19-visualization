@@ -3,6 +3,8 @@ async function buildMap(){
     //var margin = {top:50, left: 50, right:50, bottom: 50};
     var height = 800;
     var width = 1200; 
+    var zoomExtent = d3.zoom().scaleExtent([0 , 20]);
+
 
     var mapData = await d3.json("topojson/bgd_admbnda_adm2_bbs_20180410.1.json")
     var csvData = await d3.csv("csv/datasheets.csv")
@@ -20,17 +22,17 @@ async function buildMap(){
 
     var colorScale = d3.scaleThreshold()
         .domain([0, 20, 50, 100, 300, 500, 700])
-        .range(d3.schemeReds[7])
+        .range(d3.schemeGreys[7])
 
     var radius = d3.scaleLinear()
-        .domain([0, 700])
-        .range([0, 20]);
+        .domain([0, 50])
+        .range([0, 100]);
 
     console.log(featuresWorld)
 
     var projection = d3.geoMercator()
         .center([90.2, 24.8])
-            .scale(3000)
+            .scale(7000)
             .rotate( 0, 0, 0)
                 
     var path = d3.geoPath()
@@ -40,6 +42,7 @@ async function buildMap(){
             .append("svg")
             .attr("height", height)
             .attr("width", width)
+            .call(zoomExtent.on("zoom", zoom))
     
     var g = svg.append("g")
 
@@ -51,6 +54,7 @@ async function buildMap(){
             .attr("d", path)
             .attr("fill", "white")
             .attr("stroke", "grey")
+            .attr("stroke-width", ".2")
 
         g.selectAll(".district")
             .data(mergedData)
@@ -64,9 +68,17 @@ async function buildMap(){
             .data(mergedData)
             .enter()
             .append("circle")
-            .attr("r", function(d){ return radius(d.quarantine)})
+            .attr("r", function(d){ return radius(d.confirmed)})
             .attr("transform", function(d){ return "translate("+ path.centroid(d)+")"})
-            .attr("fill", "steelblue")
+            .attr("fill", "red")
+            .attr("stroke", "black")
+            .attr("stroke-width", ".5")
+
+
+
+        function zoom(){
+            g.attr("transform", d3.event.transform)
+        }
 }
 
 buildMap();

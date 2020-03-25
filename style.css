@@ -2,6 +2,10 @@ body {
     background-color: white;
 }
 
+h3 {
+    color: "red";
+    text-align: center;
+}
 svg {
     background: #e8e7e7;
     
